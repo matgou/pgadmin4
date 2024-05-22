@@ -390,7 +390,7 @@ class ServerModule(sg.ServerGroupPluginModule):
                 maintenance_db=data.maintenance_db,
                 username=data.shared_username,
                 save_password=0,
-                comment=None,
+                comment=data.comment,
                 role=data.role,
                 bgcolor=data.bgcolor if data.bgcolor else None,
                 fgcolor=data.fgcolor if data.fgcolor else None,
@@ -1639,6 +1639,9 @@ class ServerNode(PGChildNodeView):
                 password = keyring.get_password(
                     KEY_RING_SERVICE_NAME,
                     KEY_RING_USERNAME_FORMAT.format(server.name, server.id))
+
+        if server.comment and "database-generic" in server.comment:
+            prompt_password = False
 
         # Check do we need to prompt for the database server or ssh tunnel
         # password or both. Return the password template in case password is
